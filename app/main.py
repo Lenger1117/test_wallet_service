@@ -8,12 +8,14 @@ from app.schemas import OperationRequest, WalletResponse
 
 app = FastAPI()
 
+
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
+
 
 @app.get("/api/v1/wallets/{wallet_id}", response_model=WalletResponse)
 def get_wallet(wallet_id: str, db: Session = Depends(get_db)):
@@ -25,7 +27,9 @@ def get_wallet(wallet_id: str, db: Session = Depends(get_db)):
         db.refresh(wallet)
     return wallet
 
-@app.post("/api/v1/wallets/{wallet_id}/operation", response_model=WalletResponse)
+
+@app.post("/api/v1/wallets/{wallet_id}/operation",
+          response_model=WalletResponse)
 def operate_wallet(
     wallet_id: str,
     operation: OperationRequest,
@@ -38,7 +42,10 @@ def operate_wallet(
     amount = Decimal(str(operation.amount))
     if operation.operation_type == "WITHDRAW":
         if wallet.balance < amount:
-            raise HTTPException(status_code=400, detail="Недостаточно средств.")
+            raise HTTPException(
+                status_code=400,
+                detail="Недостаточно средств."
+                )
         wallet.balance -= amount
     else:
         wallet.balance += amount

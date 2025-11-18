@@ -1,12 +1,15 @@
 from pydantic import BaseModel, UUID4, Field, ConfigDict
-from  typing import Literal
+from typing import Literal
 
 
 class OperationRequest(BaseModel):
     operation_type: Literal["DEPOSIT", "WITHDRAW"] = Field(
         description="Тип операции: пополнение или снятие."
     )
-    amount: float = Field(gt=0, description="Сумма операции. Должна быть положительной.")
+    amount: float = Field(
+        gt=0,
+        description="Сумма операции. Должна быть положительной."
+        )
 
 
 class WalletResponse(BaseModel):

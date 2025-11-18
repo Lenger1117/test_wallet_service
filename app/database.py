@@ -3,9 +3,13 @@ from sqlalchemy.orm import sessionmaker, DeclarativeBase
 import os
 
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@db:5432/walletdb")
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql://user:password@db:5432/walletdb"
+    )
 engine = create_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
+
 
 class Base(DeclarativeBase):
     pass
